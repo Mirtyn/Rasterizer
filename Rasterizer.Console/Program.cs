@@ -5,7 +5,7 @@ namespace Rasterizer.Console
     {
         static void Main(string[] args)
         {
-            using (var rasterizer = new SimplePixelRasterizer())
+            using (var rasterizer = new MovingPixelRasterizer())
             {
                 rasterizer.Run(800, 600);
             }

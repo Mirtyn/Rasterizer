@@ -1,14 +1,9 @@
 ﻿
 namespace Rasterizer.Console
 {
-    internal class SimplePixelRasterizer : AbstractRasterizer
+    internal class BresenhamLineRasterizer : AbstractRasterizer
     {
         Random random = new Random();
-
-        public override void Load()
-        {
-            
-        }
 
         public override void Render()
         {
@@ -18,11 +13,6 @@ namespace Rasterizer.Console
             {
                 Pixel(random.Next(0, Width), random.Next(0, Height));
             }
-        }
-
-        public override void Update()
-        {
-            
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using Rasterizer.Library.Mathmatics;
 using System.Diagnostics;
 
 namespace Rasterizer.Console
@@ -8,6 +9,8 @@ namespace Rasterizer.Console
     internal abstract class AbstractRasterizer : IDisposable
     {
         Window? window = null;
+
+        public float ElapsedTime = 0.0f;
 
         public virtual void Load()
         {
@@ -51,7 +54,9 @@ namespace Rasterizer.Console
         }
 
         private void InternalUpdateFrame(FrameEventArgs a) 
-        { 
+        {
+            ElapsedTime = (float)a.Time;
+
             Update();
         }
 
@@ -68,6 +73,16 @@ namespace Rasterizer.Console
         public void Pixel(int x, int y, float r = 1f, float g = 1f, float b = 1f)
         {
             window?.Pixel(x, y, r, g, b);
+        }
+
+        public void Pixel(Vector2 v, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.Pixel((int)v.X, (int)v.Y, r, g, b);
+        }
+
+        public void Pixel(Vector3 v, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.Pixel((int)v.X, (int)v.Y, r, g, b);
         }
 
         public void Dispose()
