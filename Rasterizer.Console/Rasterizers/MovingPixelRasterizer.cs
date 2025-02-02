@@ -1,5 +1,4 @@
-﻿
-using Rasterizer.Library.Mathmatics;
+﻿using Rasterizer.Library.Mathmatics;
 
 namespace Rasterizer.Console
 {
@@ -13,14 +12,16 @@ namespace Rasterizer.Console
 
         Vector3[] PositionArray;
 
-        int Speed = 125;
+        int HorizontalSpeed = 125;
 
-        private int _numberOfPixels = 100;
+        int VerticalSpeed = 75;
 
-        public int NumberOfPixels 
-        { 
+        private int _numberOfPixels = 400;
+
+        public int NumberOfPixels
+        {
             get { return _numberOfPixels; }
-            set 
+            set
             {
                 _numberOfPixels = value;
 
@@ -28,7 +29,7 @@ namespace Rasterizer.Console
                 {
                     PositionArray = new Vector3[_numberOfPixels];
                 }
-            } 
+            }
         }
 
         public MovingPixelRasterizer()
@@ -40,9 +41,10 @@ namespace Rasterizer.Console
 
         public override void Load()
         {
-            for(var i = 0; i < PositionArray.Length; i++)
+            for (var i = 0; i < PositionArray.Length; i++)
             {
-                DirectionArray[i].X = 1.0f;
+                DirectionArray[i].X = random.Next(0, 2) == 0 ? 1.0f : -1.0f;
+                DirectionArray[i].Y = random.Next(0, 2) == 0 ? 1.0f : -1.0f;
                 PositionArray[i].X = random.Next(Width);
                 PositionArray[i].Y = random.Next(Height);
             }
@@ -63,12 +65,15 @@ namespace Rasterizer.Console
         {
             for (var i = 0; i < PositionArray.Length; i++)
             {
-                PositionArray[i] += DirectionArray[i] * ElapsedTime * Speed;
+                PositionArray[i].X += DirectionArray[i].X * ElapsedTime * HorizontalSpeed;
+                PositionArray[i].Y += DirectionArray[i].Y * ElapsedTime * VerticalSpeed;
 
                 if (PositionArray[i].X >= Width || PositionArray[i].X < 0)
                 {
-                    DirectionArray[i].X = -DirectionArray[i].X;
+                    DirectionArray[i].X = PositionArray[i].X < 0 || PositionArray[i].X >= Width ? -DirectionArray[i].X : DirectionArray[i].X;
+                    DirectionArray[i].Y = PositionArray[i].Y < 0 || PositionArray[i].Y >= Height ? -DirectionArray[i].Y : DirectionArray[i].Y;
                     PositionArray[i].X = PositionArray[i].X < 0 ? 0 : Width - 1;
+                    PositionArray[i].Y = PositionArray[i].Y < 0 ? 0 : Height - 1;
                     PositionArray[i].Y = random.Next(Height);
                 }
             }

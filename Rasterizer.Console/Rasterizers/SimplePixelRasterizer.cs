@@ -1,5 +1,4 @@
-﻿
-namespace Rasterizer.Console
+﻿namespace Rasterizer.Console
 {
     internal class SimplePixelRasterizer : AbstractRasterizer
     {
@@ -7,7 +6,7 @@ namespace Rasterizer.Console
 
         public override void Load()
         {
-            
+
         }
 
         public override void Render()
@@ -22,7 +21,7 @@ namespace Rasterizer.Console
 
         public override void Update()
         {
-            
+
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Rasterizer.Console
             Load();
         }
 
-        private void InternalUpdateFrame(FrameEventArgs a) 
+        private void InternalUpdateFrame(FrameEventArgs a)
         {
             ElapsedTime = (float)a.Time;
 

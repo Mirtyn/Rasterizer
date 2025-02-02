@@ -8,6 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Core\**" />
+    <Compile Remove="Samples\**" />
+    <EmbeddedResource Remove="Core\**" />
+    <EmbeddedResource Remove="Samples\**" />
+    <None Remove="Core\**" />
+    <None Remove="Samples\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="RasterizeWindow.cs" />
   </ItemGroup>
 

@@ -1,5 +1,4 @@
-﻿
-namespace Rasterizer.Console
+﻿namespace Rasterizer.Console
 {
     internal class BresenhamLineRasterizer : AbstractRasterizer
     {
