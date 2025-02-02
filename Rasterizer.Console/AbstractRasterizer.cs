@@ -8,21 +8,15 @@ using System.Reflection;
 
 namespace Rasterizer.Console
 {
-    abstract class AbstractRasterizer
+    class Program
     {
-        Window? window = null;
+        static Window? window = null;
 
-        protected abstract void Load();
-
-        protected abstract void Update();
-
-        protected abstract void Render();
-
-        public void Run(int width, int height)
+        static void Main(string[] args)
         {
             var nativeWindowSettings = new NativeWindowSettings()
             {
-                ClientSize = (width, height),
+                ClientSize = (800, 600),
                 Title = "Rasterizer - Console Window",
                 Profile = ContextProfile.Compatability, // needed for OpenGL Immediate Mode
                 WindowBorder = WindowBorder.Hidden,
@@ -30,9 +24,8 @@ namespace Rasterizer.Console
 
             using (window = new Window(GameWindowSettings.Default, nativeWindowSettings))
             {
-                window.Load += InternalLoad;
-                window.UpdateFrame += InternalUpdateFrame;
-                window.RenderFrame += InternalRenderFrame;
+                //window.Load += SetupRasterizer;
+                window.UpdateFrame += UpdateRasterizer;
 
                 window.Run();
             }
@@ -42,19 +35,26 @@ namespace Rasterizer.Console
             Thread.Sleep(1000);
         }
 
-        private void InternalLoad()
+        private static void UpdateRasterizer(FrameEventArgs obj)
         {
-            Load();
+            window.Clear();
+
+            var random = new Random();
+
+            for (var i = 0; i < 100; i++)
+            {
+                window.Pixel(random.Next(0, window.ClientSize.X), random.Next(0, window.ClientSize.Y));
+            }
         }
 
-        private void InternalUpdateFrame(FrameEventArgs a) 
-        { 
-            Update();
-        }
+        //private static void SetupRasterizer()
+        //{
+        //    var random = new Random();
 
-        private void InternalRenderFrame(FrameEventArgs a)
-        {
-            Render();
-        }
+        //    for (var i = 0; i < 100; i++)
+        //    {
+        //        window.Pixel(random.Next(0, window.ClientSize.X), random.Next(0, window.ClientSize.Y));
+        //    }
+        //}
     }
 }
