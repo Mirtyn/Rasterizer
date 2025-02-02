@@ -3,6 +3,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
+using System.Diagnostics;
 
 namespace Rasterizer.Console
 {
@@ -40,10 +41,10 @@ namespace Rasterizer.Console
         {
             base.OnLoad();
 
-            //Console.WriteLine(GL.GetString(StringName.Vendor));
-            //Console.WriteLine(GL.GetString(StringName.Renderer));
-            //Console.WriteLine(GL.GetString(StringName.Version));
-            //Console.WriteLine(GL.GetString(StringName.ShadingLanguageVersion));
+            Debug.WriteLine(GL.GetString(StringName.Vendor));
+            Debug.WriteLine(GL.GetString(StringName.Renderer));
+            Debug.WriteLine(GL.GetString(StringName.Version));
+            Debug.WriteLine(GL.GetString(StringName.ShadingLanguageVersion));
 
             GL.Disable(EnableCap.DepthTest);
             GL.Disable(EnableCap.Texture2D);
@@ -52,7 +53,7 @@ namespace Rasterizer.Console
 
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
-            this.VSync = VSyncMode.On;
+            VSync = VSyncMode.On;
 
             Clear();
 
