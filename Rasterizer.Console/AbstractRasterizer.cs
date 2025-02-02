@@ -1,10 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace Rasterizer.Console
 {
@@ -12,9 +9,15 @@ namespace Rasterizer.Console
     {
         Window? window = null;
 
-        public abstract void Load();
+        public virtual void Load()
+        {
 
-        public abstract void Update();
+        }
+
+        public virtual void Update()
+        {
+
+        }
 
         public abstract void Render();
 

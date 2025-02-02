@@ -1,21 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
-using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
-using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System.Diagnostics;
-using System.Reflection;
-
+﻿
 namespace Rasterizer.Console
 {
     internal class BresenhamLineRasterizer : AbstractRasterizer
     {
         Random random = new Random();
-
-        public override void Load()
-        {
-            
-        }
 
         public override void Render()
         {
@@ -25,11 +13,6 @@ namespace Rasterizer.Console
             {
                 Pixel(random.Next(0, Width), random.Next(0, Height));
             }
-        }
-
-        public override void Update()
-        {
-            
         }
     }
 }
