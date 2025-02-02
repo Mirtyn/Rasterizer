@@ -92,7 +92,7 @@ namespace Rasterizer.UnitTests
 
             var expected = OpenTK.Mathematics.Vector3.Divide(otkA, otkB);
 
-            Assert.IsTrue(EqualsFuzzy(expected, new Vector3(otkA.X, otkA.Y, otkA.Z) * otkB));
+            Assert.IsTrue(EqualsFuzzy(expected, new Vector3(otkA.X, otkA.Y, otkA.Z) / otkB));
         }
 
         private bool EqualsFuzzy(OpenTK.Mathematics.Vector3 a, Vector3 b, float fuzzy = 0.0001f)
