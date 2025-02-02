@@ -1,4 +1,4 @@
-using System.Numerics;
+using Rasterizer.Library.Mathmatics;
 
 namespace Rasterizer.UnitTests
 {

@@ -8,15 +8,21 @@ using System.Reflection;
 
 namespace Rasterizer.Console
 {
-    class Program
+    internal abstract class AbstractRasterizer : IDisposable
     {
-        static Window? window = null;
+        Window? window = null;
 
-        static void Main(string[] args)
+        public abstract void Load();
+
+        public abstract void Update();
+
+        public abstract void Render();
+
+        public void Run(int width, int height)
         {
             var nativeWindowSettings = new NativeWindowSettings()
             {
-                ClientSize = (800, 600),
+                ClientSize = (width, height),
                 Title = "Rasterizer - Console Window",
                 Profile = ContextProfile.Compatability, // needed for OpenGL Immediate Mode
                 WindowBorder = WindowBorder.Hidden,
@@ -24,8 +30,9 @@ namespace Rasterizer.Console
 
             using (window = new Window(GameWindowSettings.Default, nativeWindowSettings))
             {
-                //window.Load += SetupRasterizer;
-                window.UpdateFrame += UpdateRasterizer;
+                window.Load += InternalLoad;
+                window.UpdateFrame += InternalUpdateFrame;
+                window.RenderFrame += InternalRenderFrame;
 
                 window.Run();
             }
@@ -35,26 +42,47 @@ namespace Rasterizer.Console
             Thread.Sleep(1000);
         }
 
-        private static void UpdateRasterizer(FrameEventArgs obj)
+        private void InternalLoad()
         {
-            window.Clear();
+            Load();
+        }
 
-            var random = new Random();
+        private void InternalUpdateFrame(FrameEventArgs a) 
+        { 
+            Update();
+        }
 
-            for (var i = 0; i < 100; i++)
+        private void InternalRenderFrame(FrameEventArgs a)
+        {
+            Render();
+        }
+
+        public void Clear()
+        {
+            window?.Clear();
+        }
+
+        public void Pixel(int x, int y, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.Pixel(x, y, r, g, b);
+        }
+
+        public void Dispose()
+        {
+            window?.Dispose();
+        }
+
+        public int Width
+        {
+            get
             {
-                window.Pixel(random.Next(0, window.ClientSize.X), random.Next(0, window.ClientSize.Y));
+                return window == null ? 0 : window.ClientSize.X;
             }
         }
 
-        //private static void SetupRasterizer()
-        //{
-        //    var random = new Random();
-
-        //    for (var i = 0; i < 100; i++)
-        //    {
-        //        window.Pixel(random.Next(0, window.ClientSize.X), random.Next(0, window.ClientSize.Y));
-        //    }
-        //}
+        public int Height
+        {
+            get { return window == null ? 0 : window.ClientSize.Y; }
+        }
     }
 }
