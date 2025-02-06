@@ -13,22 +13,30 @@ namespace Rasterizer.Console.Rasterizers
         private float timer = 0f;
         private float maxTimer = 0.25f;
 
-        private Vector2 startPos;
-        private Vector2 endPos;
+        private float splitChance = 0.05f;
+
+        private List<Vector2> startPosses;
+        private List<Vector2> endPosses;
+
+        private int endPointIndex = 1;
 
         private List<Vector2> startPositions = new List<Vector2>();
         private List<Vector2> endPositions = new List<Vector2>();
+        private List<Color4> colors = new List<Color4>();
         private int index = 0;
 
         public override void Load()
         {
-
+            startPosses = new List<Vector2>() { new Vector2(Width / 2, Height / 2) };
+            endPosses = new List<Vector2>() { new Vector2(Width / 2, Height / 2) };
         }
 
         public override void Update()
         {
             System.Console.WriteLine("GameTime: " + TotalGameTime);
             System.Console.WriteLine("ElapsedTIme: " + ElapsedTime);
+
+            System.Console.WriteLine("Number Branches: " + startPosses.Count);
 
             color.R += (float)rnd.NextDouble() * ElapsedTime;
             color.G += (float)rnd.NextDouble() * ElapsedTime;
@@ -65,41 +73,80 @@ namespace Rasterizer.Console.Rasterizers
 
                 for (int i = 0; i < index; i++)
                 {
-                    DrawLine(startPositions[i], endPositions[i], lineColor.R, lineColor.G, lineColor.B);
+                    var color = colors[i];
+                    DrawLine(startPositions[i], endPositions[i], color.R, color.G, color.B);
                 }
 
                 return;
             }
 
-            System.Console.WriteLine("Done!");
+            for (int i = 0; i < endPointIndex; i++)
+            {
+                startPosses[i] = endPosses[i];
 
-            startPos = endPos;
-            endPos = new Vector2(startPos.X + rnd.NextInt64(-50, 50), startPos.Y + rnd.NextInt64(-50, 50));
+                var startPos = startPosses[i];
 
-            if (endPos.X < 0)
-            {
-                endPos.X += rnd.NextInt64(50, 200);
-            }
-            else if (endPos.X > Width)
-            {
-                endPos.X -= rnd.NextInt64(50, 200);
-            }
-            if (endPos.Y < 0)
-            {
-                endPos.Y += rnd.NextInt64(50, 200);
-            }
-            else if (endPos.Y > Height)
-            {
-                endPos.Y -= rnd.NextInt64(50, 200);
+                endPosses[i] = new Vector2(startPos.X + rnd.NextInt64(-50, 50), startPos.Y + rnd.NextInt64(-50, 50));
+
+                var endPos = endPosses[i];
+
+                if (endPos.X < 0)
+                {
+                    endPos.X += rnd.NextInt64(50, 200);
+                }
+                else if (endPos.X > Width)
+                {
+                    endPos.X -= rnd.NextInt64(50, 200);
+                }
+                if (endPos.Y < 0)
+                {
+                    endPos.Y += rnd.NextInt64(50, 200);
+                }
+                else if (endPos.Y > Height)
+                {
+                    endPos.Y -= rnd.NextInt64(50, 200);
+                }
+
+                colors.Add(lineColor);
+
+                startPositions.Add(startPos);
+                endPositions.Add(endPos);
+
+                if (rnd.NextSingle() < splitChance)
+                {
+                    startPosses.Add(startPos);
+
+                    var branchEndPos = new Vector2(startPos.X + rnd.NextInt64(-50, 50), startPos.Y + rnd.NextInt64(-50, 50));
+
+                    if (branchEndPos.X < 0)
+                    {
+                        branchEndPos.X += rnd.NextInt64(50, 200);
+                    }
+                    else if (branchEndPos.X > Width)
+                    {
+                        branchEndPos.X -= rnd.NextInt64(50, 200);
+                    }
+                    if (branchEndPos.Y < 0)
+                    {
+                        branchEndPos.Y += rnd.NextInt64(50, 200);
+                    }
+                    else if (branchEndPos.Y > Height)
+                    {
+                        branchEndPos.Y -= rnd.NextInt64(50, 200);
+                    }
+
+                    endPosses.Add(branchEndPos);
+                }
+
+                index++;
             }
 
-            startPositions.Add(startPos);
-            endPositions.Add(endPos);
-            index++;
+            endPointIndex = startPosses.Count;
 
             for (int i = 0; i < index; i++)
             {
-                DrawLine(startPositions[i], endPositions[i], lineColor.R, lineColor.G, lineColor.B);
+                var color = colors[i];
+                DrawLine(startPositions[i], endPositions[i], color.R, color.G, color.B);
             }
         }
 
