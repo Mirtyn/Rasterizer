@@ -23,6 +23,7 @@ namespace Rasterizer.Console.Rasterizers
 
         public override void Load()
         {
+            //OpenTK.Mathematics.Matrix4
             cube.triangles = new Triangle[12];
             cube.triangles[0].Points = [new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)];
             cube.triangles[1].Points = [new Vector3(0, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0)];
@@ -45,7 +46,7 @@ namespace Rasterizer.Console.Rasterizers
             float near = 0.1f;
             float far = 1000f;
             float fov = 90f;
-            float aspectRatio = 600 / 800;
+            float aspectRatio = Height / Width;
             float fovRad = 1f / MathF.Tan(fov * 0.5f / 180 * MathF.PI);
 
             projectionMatrix.Matrix[0, 0] = aspectRatio * fovRad;
@@ -86,19 +87,23 @@ namespace Rasterizer.Console.Rasterizers
 
             fTheta += 1f + ElapsedTime;
 
-            RotationZMatrix.Matrix[0,0] = MathF.Cos(fTheta);
-            RotationZMatrix.Matrix[0,1] = MathF.Sin(fTheta);
-            RotationZMatrix.Matrix[1,0] = -MathF.Sin(fTheta);
-            RotationZMatrix.Matrix[1,1] = MathF.Cos(fTheta);
+            Matrix4x4.CreateRotationY(fTheta, out RotationZMatrix);
+
+            //RotationZMatrix.Matrix[0,0] = MathF.Cos(fTheta);
+            //RotationZMatrix.Matrix[0,1] = MathF.Sin(fTheta);
+            //RotationZMatrix.Matrix[1,0] = -MathF.Sin(fTheta);
+            //RotationZMatrix.Matrix[1,1] = MathF.Cos(fTheta);
             //RotationZMatrix.Matrix[2,2] = 1;
             //RotationZMatrix.Matrix[3,3] = 1;
 
-            RotationXMatrix.Matrix[0, 0] = 1f;
-            RotationXMatrix.Matrix[1, 1] = MathF.Cos(0.5f * fTheta);
-            RotationXMatrix.Matrix[1, 2] = MathF.Sin(0.5f * fTheta);
-            RotationXMatrix.Matrix[2, 1] = -MathF.Sin(0.5f * fTheta);
-            RotationXMatrix.Matrix[2, 2] = -MathF.Cos(0.5f * fTheta);
-            RotationXMatrix.Matrix[3, 3] = 1;
+            Matrix4x4.CreateRotationX(fTheta, out RotationZMatrix);
+
+            //RotationXMatrix.Matrix[0, 0] = 1f;
+            //RotationXMatrix.Matrix[1, 1] = MathF.Cos(0.5f * fTheta);
+            //RotationXMatrix.Matrix[1, 2] = MathF.Sin(0.5f * fTheta);
+            //RotationXMatrix.Matrix[2, 1] = -MathF.Sin(0.5f * fTheta);
+            //RotationXMatrix.Matrix[2, 2] = -MathF.Cos(0.5f * fTheta);
+            //RotationXMatrix.Matrix[3, 3] = 1;
 
             foreach (var tri in cube.triangles)
             {

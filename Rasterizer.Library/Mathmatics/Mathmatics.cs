@@ -1,5 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using System.Collections;
+using System.Diagnostics.Contracts;
 
 namespace Rasterizer.Library.Mathmatics
 {
@@ -337,6 +339,40 @@ namespace Rasterizer.Library.Mathmatics
                 o.Y /= w;
                 o.Z /= w;
             }
+        }
+
+        public static void CreateRotationX(float radians, out Matrix4x4 result)
+        {
+            result = Identity;
+
+            result.Matrix[1, 1] = MathF.Cos(0.5f * radians);
+            result.Matrix[1, 2] = MathF.Sin(0.5f * radians);
+            result.Matrix[2, 1] = -MathF.Sin(0.5f * radians);
+            result.Matrix[2, 2] = -MathF.Cos(0.5f * radians);
+
+        }
+
+        [Pure]
+        public static Matrix4x4 CreateRotationX(float radians)
+        {
+            CreateRotationX(radians, out Matrix4x4 result);
+            return result;
+        }
+
+        public static void CreateRotationY(float radians, out Matrix4x4 result)
+        {
+            result = Identity;
+            result.Matrix[0, 0] = MathF.Cos(radians);
+            result.Matrix[0, 1] = MathF.Sin(radians);
+            result.Matrix[1, 0] = -MathF.Sin(radians);
+            result.Matrix[1, 1] = MathF.Cos(radians);
+        }
+
+        [Pure]
+        public static Matrix4x4 CreateRotationY(float angle)
+        {
+            CreateRotationY(angle, out Matrix4x4 result);
+            return result;
         }
     }
 }
