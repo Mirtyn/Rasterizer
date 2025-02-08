@@ -101,17 +101,17 @@ namespace Rasterizer.Console.Rasterizers
 
             var translation = Matrix4x4.CreateTranslation(_position);
 
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftTopFront, translation), Matrix4x4.MultiplyMatrixVector(RightTopFront, translation));
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftBottomFront, translation), Matrix4x4.MultiplyMatrixVector(RightBottomFront, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftTopFront, translation), Matrix4x4.RotateVector(RightTopFront, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftBottomFront, translation), Matrix4x4.RotateVector(RightBottomFront, translation));
 
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftTopFront, translation), Matrix4x4.MultiplyMatrixVector(LeftBottomFront, translation));
-            DrawLine(Matrix4x4.MultiplyMatrixVector(RightTopFront, translation), Matrix4x4.MultiplyMatrixVector(RightBottomFront, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftTopFront, translation), Matrix4x4.RotateVector(LeftBottomFront, translation));
+            DrawLine(Matrix4x4.RotateVector(RightTopFront, translation), Matrix4x4.RotateVector(RightBottomFront, translation));
 
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftTopBack, translation), Matrix4x4.MultiplyMatrixVector(RightTopBack, translation));
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftBottomBack, translation), Matrix4x4.MultiplyMatrixVector(RightBottomBack, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftTopBack, translation), Matrix4x4.RotateVector(RightTopBack, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftBottomBack, translation), Matrix4x4.RotateVector(RightBottomBack, translation));
 
-            DrawLine(Matrix4x4.MultiplyMatrixVector(LeftTopBack, translation), Matrix4x4.MultiplyMatrixVector(LeftBottomBack, translation));
-            DrawLine(Matrix4x4.MultiplyMatrixVector(RightTopBack, translation), Matrix4x4.MultiplyMatrixVector(RightBottomBack, translation));
+            DrawLine(Matrix4x4.RotateVector(LeftTopBack, translation), Matrix4x4.RotateVector(LeftBottomBack, translation));
+            DrawLine(Matrix4x4.RotateVector(RightTopBack, translation), Matrix4x4.RotateVector(RightBottomBack, translation));
         }
 
         public override void Update()

@@ -15,9 +15,9 @@ namespace Rasterizer.Console.Rasterizers
         private Random rnd = new Random();
 
         Mesh cube = new Mesh();
-        private Matrix4x4 projectionMatrix = new Matrix4x4();
-        private Matrix4x4 RotationZMatrix = Matrix4x4.Identity;
-        private Matrix4x4 RotationXMatrix = Matrix4x4.Identity;
+        private Matrix4x4 projectionMatrix = new Matrix4x4(Matrix4x4.Identity);
+        private Matrix4x4 RotationZMatrix = new Matrix4x4(Matrix4x4.Identity);
+        private Matrix4x4 RotationXMatrix = new Matrix4x4(Matrix4x4.Identity);
 
         float fTheta;
 
@@ -87,7 +87,7 @@ namespace Rasterizer.Console.Rasterizers
 
             fTheta += 1f + ElapsedTime;
 
-            Matrix4x4.CreateRotationY(fTheta, out RotationZMatrix);
+            Matrix4x4.CreateRotationZ(fTheta, out RotationZMatrix);
 
             //RotationZMatrix.Matrix[0,0] = MathF.Cos(fTheta);
             //RotationZMatrix.Matrix[0,1] = MathF.Sin(fTheta);
@@ -112,22 +112,24 @@ namespace Rasterizer.Console.Rasterizers
                 Triangle triRotatedZX = new Triangle();
                 Triangle triRotatedZ = new Triangle();
 
-                Matrix4x4.MultiplyMatrixVector(tri.Points[0], out triRotatedZ.Points[0], RotationZMatrix);
-                Matrix4x4.MultiplyMatrixVector(tri.Points[1], out triRotatedZ.Points[1], RotationZMatrix);
-                Matrix4x4.MultiplyMatrixVector(tri.Points[2], out triRotatedZ.Points[2], RotationZMatrix);
+                // 
+                Matrix4x4.RotateVector(tri.Points[0], out triRotatedZ.Points[0], RotationZMatrix);
+                Matrix4x4.RotateVector(tri.Points[1], out triRotatedZ.Points[1], RotationZMatrix);
+                Matrix4x4.RotateVector(tri.Points[2], out triRotatedZ.Points[2], RotationZMatrix);
 
-                Matrix4x4.MultiplyMatrixVector(triRotatedZ.Points[0], out triRotatedZX.Points[0], RotationXMatrix);
-                Matrix4x4.MultiplyMatrixVector(triRotatedZ.Points[1], out triRotatedZX.Points[1], RotationXMatrix);
-                Matrix4x4.MultiplyMatrixVector(triRotatedZ.Points[2], out triRotatedZX.Points[2], RotationXMatrix);
+                // 
+                Matrix4x4.RotateVector(triRotatedZ.Points[0], out triRotatedZX.Points[0], RotationXMatrix);
+                Matrix4x4.RotateVector(triRotatedZ.Points[1], out triRotatedZX.Points[1], RotationXMatrix);
+                Matrix4x4.RotateVector(triRotatedZ.Points[2], out triRotatedZX.Points[2], RotationXMatrix);
 
                 triTranslated = triRotatedZX;
                 triTranslated.Points[0].Z = triRotatedZX.Points[0].Z + 3f;
                 triTranslated.Points[1].Z = triRotatedZX.Points[1].Z + 3f;
                 triTranslated.Points[2].Z = triRotatedZX.Points[2].Z + 3f;
 
-                Matrix4x4.MultiplyMatrixVector(triTranslated.Points[0], out triProjected.Points[0], projectionMatrix);
-                Matrix4x4.MultiplyMatrixVector(triTranslated.Points[1], out triProjected.Points[1], projectionMatrix);
-                Matrix4x4.MultiplyMatrixVector(triTranslated.Points[2], out triProjected.Points[2], projectionMatrix);
+                Matrix4x4.RotateVector(triTranslated.Points[0], out triProjected.Points[0], projectionMatrix);
+                Matrix4x4.RotateVector(triTranslated.Points[1], out triProjected.Points[1], projectionMatrix);
+                Matrix4x4.RotateVector(triTranslated.Points[2], out triProjected.Points[2], projectionMatrix);
 
                 triProjected.Points[0].X += 1f;
                 triProjected.Points[0].Y += 1f;

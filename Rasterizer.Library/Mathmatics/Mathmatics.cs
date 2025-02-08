@@ -122,7 +122,14 @@ namespace Rasterizer.Library.Mathmatics
         {
             return lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z;
         }
+
+        public override string ToString()
+        {
+            return $"{X}, {Y}, {Z}";
+        }
     }
+
+
     public struct Vector2
     {
         public float X, Y;
@@ -311,55 +318,100 @@ namespace Rasterizer.Library.Mathmatics
 
         public Matrix4x4()
         {
-        }
-
-        public Matrix4x4(float[,] otherMatrix)
-        {
-            Matrix = otherMatrix;
-        }
-
-        public static readonly Matrix4x4 Identity = new Matrix4x4 {
             Matrix = new float[,]
             {
                 { 1f, 0f, 0f, 0f },
                 { 0f, 1f, 0f, 0f },
                 { 0f, 0f, 1f, 0f },
                 { 0f, 0f, 0f, 1f }
-            } 
+            };
+        }
+
+        public Matrix4x4(float[,] matrix)
+        {
+            Matrix = matrix;
+        }
+
+        public Matrix4x4(Matrix4x4 matrix)
+        {
+            for(var i = 0; i < 4; i++)
+            {
+                for (var j = 0; j < 4; j++)
+                {
+                    Matrix[i, j] = matrix[i, j];
+                }
+            }
+        }
+
+        public static readonly Matrix4x4 Identity = new Matrix4x4();
+
+        public static readonly Matrix4x4 Zero = new Matrix4x4()
+        {
+            Matrix = new float[,]
+            {
+                { 0f, 0f, 0f, 0f },
+                { 0f, 0f, 0f, 0f },
+                { 0f, 0f, 0f, 0f },
+                { 0f, 0f, 0f, 0f }
+            }
         };
 
-        public static Vector3 MultiplyMatrixVector(Vector3 i, Matrix4x4 m)
+        public float this[int rowIndex, int columnIndex]
         {
-            MultiplyMatrixVector(i, out Vector3 result, m);
+            readonly get { return Matrix[rowIndex, columnIndex]; }
+            set { Matrix[rowIndex, columnIndex] = value; }
+        }
+
+        public static Vector3 RotateVector(Vector3 i, Matrix4x4 m)
+        {
+            RotateVector(i, out Vector3 result, m);
             return result;
         }
 
-        public static void MultiplyMatrixVector(Vector3 i, out Vector3 o, Matrix4x4 m)
+        public static void RotateVector(Vector3 i, out Vector3 o, Matrix4x4 m)
         {
-            o.X = i.X * m.Matrix[0, 0] + i.Y * m.Matrix[1, 0] + i.Z * m.Matrix[2, 0] + m.Matrix[3, 0];
-            o.Y = i.X * m.Matrix[0, 1] + i.Y * m.Matrix[1, 1] + i.Z * m.Matrix[2, 1] + m.Matrix[3, 1];
-            o.Z = i.X * m.Matrix[0, 2] + i.Y * m.Matrix[1, 2] + i.Z * m.Matrix[2, 2] + m.Matrix[3, 2];
-            float w = i.X * m.Matrix[0, 3] + i.Y * m.Matrix[1, 3] + i.Z * m.Matrix[2, 3] + m.Matrix[3, 3];
+            o.X = (i.X * m[0, 0]) + (i.Y * m[1, 0]) + (i.Z * m[2, 0]);
+            o.Y = (i.X * m[0, 1]) + (i.Y * m[1, 1]) + (i.Z * m[2, 1]);
+            o.Z = (i.X * m[0, 2]) + (i.Y * m[1, 2]) + (i.Z * m[2, 2]);
 
-            if (w != 0)
-            {
-                o.X /= w;
-                o.Y /= w;
-                o.Z /= w;
-            }
+            //o.X = i.X * m.Matrix[0, 0] + i.Y * m.Matrix[1, 0] + i.Z * m.Matrix[2, 0] + m.Matrix[3, 0];
+            //o.Y = i.X * m.Matrix[0, 1] + i.Y * m.Matrix[1, 1] + i.Z * m.Matrix[2, 1] + m.Matrix[3, 1];
+            //o.Z = i.X * m.Matrix[0, 2] + i.Y * m.Matrix[1, 2] + i.Z * m.Matrix[2, 2] + m.Matrix[3, 2];
+
+            //float w = i.X * m.Matrix[0, 3] + i.Y * m.Matrix[1, 3] + i.Z * m.Matrix[2, 3] + m.Matrix[3, 3];
+
+            //if (w != 0)
+            //{
+            //    o.X /= w;
+            //    o.Y /= w;
+            //    o.Z /= w;
+            //}
+        }
+
+        public static Vector3 TranslateVector(Vector3 i, Matrix4x4 m)
+        {
+            TranslateVector(i, out Vector3 result, m);
+            return result;
+        }
+
+        public static void TranslateVector(Vector3 i, out Vector3 o, Matrix4x4 m)
+        {
+            o.X = i.X + m[3, 0];
+            o.Y = i.Y + m[3, 1];
+            o.Z = i.Z + m[3, 2];
         }
 
         public static void CreateTranslation(float x, float y, float z, out Matrix4x4 result)
         {
-            result = Identity;
-            result.Matrix[3, 0] = x;
-            result.Matrix[3, 1] = y;
-            result.Matrix[3, 2] = z;
+            result = new Matrix4x4();
+            result[3, 0] = x;
+            result[3, 1] = y;
+            result[3, 2] = z;
         }
 
         public static void CreateTranslation(in Vector3 vector, out Matrix4x4 result)
         {
-            result = Identity;
+            result = new Matrix4x4();
             result.Matrix[3, 0] = vector.X;
             result.Matrix[3, 1] = vector.Y;
             result.Matrix[3, 2] = vector.Z;
@@ -379,13 +431,12 @@ namespace Rasterizer.Library.Mathmatics
 
         public static void CreateRotationX(float radians, out Matrix4x4 result)
         {
-            result = Identity;
+            result = new Matrix4x4();
 
-            result.Matrix[1, 1] = MathF.Cos(0.5f * radians);
-            result.Matrix[1, 2] = MathF.Sin(0.5f * radians);
-            result.Matrix[2, 1] = -MathF.Sin(0.5f * radians);
-            result.Matrix[2, 2] = -MathF.Cos(0.5f * radians);
-
+            result.Matrix[1, 1] = MathF.Cos(radians);
+            result.Matrix[1, 2] = MathF.Sin(radians);
+            result.Matrix[2, 1] = -MathF.Sin(radians);
+            result.Matrix[2, 2] = MathF.Cos(radians);
         }
 
         public static Matrix4x4 CreateRotationX(float radians)
@@ -396,16 +447,51 @@ namespace Rasterizer.Library.Mathmatics
 
         public static void CreateRotationY(float radians, out Matrix4x4 result)
         {
-            result = Identity;
+            result = new Matrix4x4();
             result.Matrix[0, 0] = MathF.Cos(radians);
-            result.Matrix[0, 1] = MathF.Sin(radians);
-            result.Matrix[1, 0] = -MathF.Sin(radians);
-            result.Matrix[1, 1] = MathF.Cos(radians);
+            result.Matrix[0, 2] = -MathF.Sin(radians);
+            result.Matrix[2, 0] = MathF.Sin(radians);
+            result.Matrix[2, 2] = MathF.Cos(radians);
+
+            //var cos = MathF.Cos(angle);
+            //var sin = MathF.Sin(angle);
+
+            //result = Identity;
+            //result.Row0.X = cos;
+            //result.Row0.Y = sin;
+            //result.Row1.X = -sin;
+            //result.Row1.Y = cos;
+
         }
 
         public static Matrix4x4 CreateRotationY(float angle)
         {
             CreateRotationY(angle, out Matrix4x4 result);
+            return result;
+        }
+
+        public static void CreateRotationZ(float radians, out Matrix4x4 result)
+        {
+            result = new Matrix4x4();
+            result.Matrix[0, 0] = MathF.Cos(radians);
+            result.Matrix[0, 1] = MathF.Sin(radians);
+            result.Matrix[1, 0] = -MathF.Sin(radians);
+            result.Matrix[1, 1] = MathF.Cos(radians);
+
+            //var cos = MathF.Cos(angle);
+            //var sin = MathF.Sin(angle);
+
+            //result = Identity;
+            //result.Row0.X = cos;
+            //result.Row0.Y = sin;
+            //result.Row1.X = -sin;
+            //result.Row1.Y = cos;
+
+        }
+
+        public static Matrix4x4 CreateRotationZ(float angle)
+        {
+            CreateRotationZ(angle, out Matrix4x4 result);
             return result;
         }
     }
