@@ -43,8 +43,8 @@ namespace Rasterizer.Console
         {
             for (var i = 0; i < PositionArray.Length; i++)
             {
-                DirectionArray[i].X = random.Next(0, 2) == 0 ? 1.0f : -1.0f;
-                DirectionArray[i].Y = random.Next(0, 2) == 0 ? 1.0f : -1.0f;
+                DirectionArray[i].X = random.Next(0, 2) == 0 ? 0.25f + random.NextSingle() * 0.75f : -0.25f - random.NextSingle() * 0.75f;
+                DirectionArray[i].Y = random.Next(0, 2) == 0 ? 0.25f + random.NextSingle() * 0.75f : -0.25f - random.NextSingle() * 0.75f;
                 PositionArray[i].X = random.Next(Width);
                 PositionArray[i].Y = random.Next(Height);
             }

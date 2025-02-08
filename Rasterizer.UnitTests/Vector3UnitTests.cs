@@ -63,6 +63,17 @@ namespace Rasterizer.UnitTests
         }
 
         [Test]
+        public void Vector3MultiplyWithSingleTest()
+        {
+            var otkA = new OpenTK.Mathematics.Vector3(2.1f, 1.78f, 4.89f);
+            var otkB = 2.145f;
+
+            var expected = OpenTK.Mathematics.Vector3.Multiply(otkA, otkB);
+
+            Assert.IsTrue(EqualsFuzzy(expected, new Vector3(otkA.X, otkA.Y, otkA.Z) * otkB));
+        }
+
+        [Test]
         public void Vector3DivideTest()
         {
             var otkA = new OpenTK.Mathematics.Vector3(0.0f, 0.0f, 0.0f);
@@ -71,6 +82,17 @@ namespace Rasterizer.UnitTests
             var expected = OpenTK.Mathematics.Vector3.Divide(otkA, otkB);
 
             Assert.IsTrue(EqualsFuzzy(expected, new Vector3(otkA.X, otkA.Y, otkA.Z) / new Vector3(otkB.X, otkB.Y, otkB.Z)));
+        }
+
+        [Test]
+        public void Vector3DivideWithSingleTest()
+        {
+            var otkA = new OpenTK.Mathematics.Vector3(2.1f, 1.78f, 4.89f);
+            var otkB = 0.945f;
+
+            var expected = OpenTK.Mathematics.Vector3.Divide(otkA, otkB);
+
+            Assert.IsTrue(EqualsFuzzy(expected, new Vector3(otkA.X, otkA.Y, otkA.Z) / otkB));
         }
 
         private bool EqualsFuzzy(OpenTK.Mathematics.Vector3 a, Vector3 b, float fuzzy = 0.0001f)

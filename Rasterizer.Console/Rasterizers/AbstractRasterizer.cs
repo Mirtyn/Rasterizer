@@ -11,6 +11,7 @@ namespace Rasterizer.Console
         Window? window = null;
 
         public float ElapsedTime = 0.0f;
+        public float TotalGameTime = 0.0f;
 
         public virtual void Load()
         {
@@ -57,6 +58,7 @@ namespace Rasterizer.Console
         private void InternalUpdateFrame(FrameEventArgs a)
         {
             ElapsedTime = (float)a.Time;
+            TotalGameTime += (float)a.Time;
 
             Update();
         }
@@ -84,6 +86,36 @@ namespace Rasterizer.Console
         public void Pixel(Vector3 v, float r = 1f, float g = 1f, float b = 1f)
         {
             window?.Pixel((int)v.X, (int)v.Y, r, g, b);
+        }
+
+        public void FillSquare(int x1, int y1, int x2, int y2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.FillSquare(x1, y1, x2, y2, r, g, b);
+        }
+
+        public void FillSquare(Vector2 v1, Vector2 v2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.FillSquare((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
+        }
+
+        public void FillSquare(Vector3 v1, Vector3 v2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.FillSquare((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
+        }
+
+        public void DrawLine(int x1, int y1, int x2, int y2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.DrawLine(x1, y1, x2, y2, r, g, b);
+        }
+
+        public void DrawLine(Vector2 v1, Vector2 v2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.DrawLine((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
+        }
+
+        public void DrawLine(Vector3 v1, Vector3 v2, float r = 1f, float g = 1f, float b = 1f)
+        {
+            window?.DrawLine((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
         }
 
         public void Dispose()
