@@ -1,4 +1,4 @@
-﻿namespace Rasterizer.Console
+﻿namespace Rasterizer.Console.Rasterizers
 {
     internal class SimplePixelRasterizer : AbstractRasterizer
     {

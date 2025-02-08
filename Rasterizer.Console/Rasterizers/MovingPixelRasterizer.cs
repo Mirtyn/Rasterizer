@@ -1,6 +1,6 @@
 ﻿using Rasterizer.Library.Mathmatics;
 
-namespace Rasterizer.Console
+namespace Rasterizer.Console.Rasterizers
 {
     internal class MovingPixelRasterizer : AbstractRasterizer
     {

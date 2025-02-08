@@ -4,7 +4,7 @@ using OpenTK.Windowing.Desktop;
 using Rasterizer.Library.Mathmatics;
 using System.Diagnostics;
 
-namespace Rasterizer.Console
+namespace Rasterizer.Console.Rasterizers
 {
     internal abstract class AbstractRasterizer : IDisposable
     {
