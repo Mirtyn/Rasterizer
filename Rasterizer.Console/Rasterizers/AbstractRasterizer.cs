@@ -13,6 +13,10 @@ namespace Rasterizer.Console.Rasterizers
         public float ElapsedTime = 0.0f;
         public float TotalGameTime = 0.0f;
 
+        DateTime _fpsTime; // marks the beginning the measurement began
+        int _fpsCounter; // an increasing count
+        int _fps; // the FPS calculated from the last measurement
+
         public virtual void Load()
         {
 
@@ -20,7 +24,6 @@ namespace Rasterizer.Console.Rasterizers
 
         public virtual void Update()
         {
-
         }
 
         public abstract void Render();
@@ -45,7 +48,7 @@ namespace Rasterizer.Console.Rasterizers
                 window.Run();
             }
 
-            Debug.WriteLine("Closing in 1 second...");
+            System.Console.WriteLine("Closing in 1 second...");
 
             Thread.Sleep(1000);
         }
@@ -59,6 +62,19 @@ namespace Rasterizer.Console.Rasterizers
         {
             ElapsedTime = (float)a.Time;
             TotalGameTime += (float)a.Time;
+
+            _fpsCounter++;
+
+            if ((DateTime.Now - _fpsTime).TotalSeconds >= 1)
+            {
+                // one second has elapsed 
+
+                _fps = _fpsCounter;
+                _fpsCounter = 0;
+                _fpsTime = DateTime.Now;
+
+                System.Console.WriteLine($"FPS: {_fps} Elapsed time: {ElapsedTime.ToString("0.00")} Total time: {TotalGameTime.ToString("0.00")}");
+            }
 
             Update();
         }

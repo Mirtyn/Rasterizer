@@ -401,6 +401,19 @@ namespace Rasterizer.Library.Mathmatics
             o.Z = i.Z + m[3, 2];
         }
 
+        public static Vector3 ScaleVector(Vector3 i, Matrix4x4 m)
+        {
+            ScaleVector(i, out Vector3 result, m);
+            return result;
+        }
+
+        public static void ScaleVector(Vector3 i, out Vector3 o, Matrix4x4 m)
+        {
+            o.X = i.X * m[0, 0];
+            o.Y = i.Y * m[1, 1];
+            o.Z = i.Z * m[2, 2];
+        }
+
         public static void CreateTranslation(float x, float y, float z, out Matrix4x4 result)
         {
             result = new Matrix4x4();
@@ -426,6 +439,34 @@ namespace Rasterizer.Library.Mathmatics
         public static Matrix4x4 CreateTranslation(Vector3 vector)
         {
             CreateTranslation(vector.X, vector.Y, vector.Z, out Matrix4x4 result);
+            return result;
+        }
+
+        public static void CreateScale(float x, float y, float z, out Matrix4x4 result)
+        {
+            result = new Matrix4x4();
+            result[0, 0] = x;
+            result[1, 1] = y;
+            result[2, 2] = z;
+        }
+
+        public static void CreateScale(in Vector3 vector, out Matrix4x4 result)
+        {
+            result = new Matrix4x4();
+            result[0, 0] = vector.X;
+            result[1, 1] = vector.Y;
+            result[2, 2] = vector.Z;
+        }
+
+        public static Matrix4x4 CreateScale(float x, float y, float z)
+        {
+            CreateScale(x, y, z, out Matrix4x4 result);
+            return result;
+        }
+
+        public static Matrix4x4 CreateScale(Vector3 vector)
+        {
+            CreateScale(vector.X, vector.Y, vector.Z, out Matrix4x4 result);
             return result;
         }
 
