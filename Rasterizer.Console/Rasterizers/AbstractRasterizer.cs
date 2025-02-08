@@ -118,6 +118,27 @@ namespace Rasterizer.Console.Rasterizers
             window?.DrawLine((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
         }
 
+        public void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, float r = 1f, float g = 1f, float b = 1f)
+        {
+            DrawLine(x1, y1, x2, y2, r, g, b);
+            DrawLine(x2, y2, x3, y3, r, g, b);
+            DrawLine(x3, y3, x1, y1, r, g, b);
+        }
+
+        public void DrawTriangle(Vector2 v1, Vector2 v2, Vector2 v3, float r = 1f, float g = 1f, float b = 1f)
+        {
+            DrawLine((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
+            DrawLine((int)v2.X, (int)v2.Y, (int)v3.X, (int)v3.Y, r, g, b);
+            DrawLine((int)v3.X, (int)v3.Y, (int)v1.X, (int)v1.Y, r, g, b);
+        }
+
+        public void DrawTriangle(Vector3 v1, Vector3 v2, Vector3 v3, float r = 1f, float g = 1f, float b = 1f)
+        {
+            DrawLine((int)v1.X, (int)v1.Y, (int)v2.X, (int)v2.Y, r, g, b);
+            DrawLine((int)v2.X, (int)v2.Y, (int)v3.X, (int)v3.Y, r, g, b);
+            DrawLine((int)v3.X, (int)v3.Y, (int)v1.X, (int)v1.Y, r, g, b);
+        }
+
         public void Dispose()
         {
             window?.Dispose();

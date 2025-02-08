@@ -164,6 +164,7 @@ namespace Rasterizer.Console
             dx = x2 - x1; dy = y2 - y1;
             dx1 = Math.Abs(dx); dy1 = Math.Abs(dy);
             px = 2 * dy1 - dx1; py = 2 * dx1 - dy1;
+
             if (dy1 <= dx1)
             {
                 if (dx >= 0)
@@ -208,6 +209,13 @@ namespace Rasterizer.Console
                     Pixel(x, y, r, g, b);
                 }
             }
+        }
+
+        public void DrawTriangle(int x1, int y1, int x2, int y2, int x3, int y3, float r = 1f, float g = 1f, float b = 1f)
+        {
+            DrawLine(x1, y1, x2, y2, r, g, b);
+            DrawLine(x2, y2, x3, y3, r, g, b);
+            DrawLine(x3, y3, x1, y1, r, g, b);
         }
     }
 }

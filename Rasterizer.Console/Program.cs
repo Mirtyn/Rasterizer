@@ -6,7 +6,7 @@ namespace Rasterizer.Console
     {
         static void Main(string[] args)
         {
-            using (var rasterizer = new JumpyLine())
+            using (var rasterizer = new TestRasterizer())
             {
                 rasterizer.Run(800, 600);
             }

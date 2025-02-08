@@ -308,8 +308,21 @@ namespace Rasterizer.Library.Mathmatics
 
         public Matrix4x4()
         {
-
         }
+
+        public Matrix4x4(float[,] otherMatrix)
+        {
+            Matrix = otherMatrix;
+        }
+
+        public static readonly Matrix4x4 Identity = new Matrix4x4 {
+            Matrix = new float[,]
+            {
+                { 1f, 0f, 0f, 0f },
+                { 0f, 1f, 0f, 0f },
+                { 0f, 0f, 1f, 0f },
+                { 0f, 0f, 0f, 1f }
+            } };
 
         public static void MultiplyMatrixVector(Vector3 i, out Vector3 o, Matrix4x4 m)
         {
