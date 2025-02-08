@@ -35,11 +35,6 @@ namespace Rasterizer.Console.Rasterizers
         Vector3 RotateDirection = new Vector3(1, 1, 1);
         Vector3 ScaleDirection = new Vector3(1, 1, 1);
 
-        Mesh mesh = new Mesh();
-
-        // note: Only works on Mirtyn's laptop
-        string meshPath = "Media//monkey.obj";
-
         public float CubeWidth
         {
             get { return _cubeWidth; }
@@ -113,8 +108,7 @@ namespace Rasterizer.Console.Rasterizers
 
         public override void Load()
         {
-            System.IO.Directory.GetCurrentDirectory();
-            mesh = ObjReader.Run(meshPath);
+
         }
 
 
@@ -124,27 +118,20 @@ namespace Rasterizer.Console.Rasterizers
 
             var translation = Matrix4x4.CreateTranslation(_position);
 
-            var rotationZ = Matrix4x4.CreateRotationZ(MathF.PI);
+            var rotationZ = Matrix4x4.CreateRotationZ(_rotation.Z);
 
             var rotationY = Matrix4x4.CreateRotationY(_rotation.Y);
 
             var rotationX = Matrix4x4.CreateRotationX(_rotation.X);
 
-            //var perspectiveTranform = Matrix4x4.PerspectiveMatrix(fov, aspect, near, far);
+            var transformed = new Vector3[8];
 
-            var transformed = new Vector3[mesh.Vertices.Length];
-
-            for(var i = 0; i < mesh.Vertices.Length; i++)
+            for (var i = 0; i < Points.Length; i++)
             {
-                transformed[i] = Matrix4x4.RotateVector(mesh.Vertices[i], rotationY);
-                //transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
+                transformed[i] = Matrix4x4.RotateVector(Points[i], rotationY);
+                transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
-                //transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
-
-
-                // perspective transform !!!
-                //transformed[i] = Matrix4x4.TransformVector(transformed[i], perspectiveTranform);
-
+                transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
 
                 transformed[i].X += 1.0f;
                 transformed[i].Y += 1.0f;
@@ -153,30 +140,23 @@ namespace Rasterizer.Console.Rasterizers
                 transformed[i].Y *= 0.5f * Height;
             }
 
-            for (int i = 0; i < mesh.Vertices.Length; i += 3)
-            {
-                DrawLine(transformed[i], transformed[i + 1]);
-                DrawLine(transformed[i + 1], transformed[i + 2]);
-                DrawLine(transformed[i + 2], transformed[i]);
-            }
+            DrawLine(transformed[0], transformed[1]);
+            DrawLine(transformed[2], transformed[3]);
 
-            //DrawLine(transformed[0], transformed[1]);
-            //DrawLine(transformed[2], transformed[3]);
+            DrawLine(transformed[0], transformed[2]);
+            DrawLine(transformed[1], transformed[3]);
 
-            //DrawLine(transformed[0], transformed[2]);
-            //DrawLine(transformed[1], transformed[3]);
+            DrawLine(transformed[4], transformed[5]);
+            DrawLine(transformed[6], transformed[7]);
 
-            //DrawLine(transformed[4], transformed[5]);
-            //DrawLine(transformed[6], transformed[7]);
+            DrawLine(transformed[4], transformed[6]);
+            DrawLine(transformed[5], transformed[7]);
 
-            //DrawLine(transformed[4], transformed[6]);
-            //DrawLine(transformed[5], transformed[7]);
+            DrawLine(transformed[0], transformed[4]);
+            DrawLine(transformed[1], transformed[5]);
 
-            //DrawLine(transformed[0], transformed[4]);
-            //DrawLine(transformed[1], transformed[5]);
-
-            //DrawLine(transformed[2], transformed[6]);
-            //DrawLine(transformed[3], transformed[7]);
+            DrawLine(transformed[2], transformed[6]);
+            DrawLine(transformed[3], transformed[7]);
         }
 
         public override void Update()

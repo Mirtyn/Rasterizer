@@ -6,7 +6,7 @@ namespace Rasterizer.Console
     {
         static void Main(string[] args)
         {
-            using (var rasterizer = new RotatingCubeRasterizer())
+            using (var rasterizer = new ObjRasterizer())
             {
                 rasterizer.Run(800, 800);
             }
