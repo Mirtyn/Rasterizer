@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
 using Rasterizer.Library;
 using Rasterizer.Library.Mathmatics;
 
@@ -74,54 +75,54 @@ namespace Rasterizer.Console
                 switch (parts[0])
                 {
                     case "v":
-                        verticesByIndex[currentVert] = new Vector3(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3]));
+                        verticesByIndex[currentVert] = new Vector3(float.Parse(parts[1], CultureInfo.InvariantCulture.NumberFormat), float.Parse(parts[2], CultureInfo.InvariantCulture.NumberFormat), float.Parse(parts[3], CultureInfo.InvariantCulture.NumberFormat));
                         currentVert++;
                         break;
 
                     case "vn":
-                        normalsByIndex[currentNormal] = new Vector3(float.Parse(parts[1]), float.Parse(parts[2]), float.Parse(parts[3]));
+                        normalsByIndex[currentNormal] = new Vector3(float.Parse(parts[1], CultureInfo.InvariantCulture.NumberFormat), float.Parse(parts[2], CultureInfo.InvariantCulture.NumberFormat), float.Parse(parts[3], CultureInfo.InvariantCulture.NumberFormat));
                         currentNormal++;
                         break;
 
                     case "vt":
-                        uvsByIndex[currentUv] = new Vector2(float.Parse(parts[1]), float.Parse(parts[2]));
+                        uvsByIndex[currentUv] = new Vector2(float.Parse(parts[1], CultureInfo.InvariantCulture.NumberFormat), float.Parse(parts[2], CultureInfo.InvariantCulture.NumberFormat));
                         currentUv++;
                         break;
 
                     case "f":
                         var faceParts = parts[1].Split('/');
 
-                        verticesIndex[currentFace] = int.Parse(faceParts[0]);
-                        uvsIndex[currentFace] = int.Parse(faceParts[1]);
-                        normalsIndex[currentFace] = int.Parse(faceParts[2]);
+                        verticesIndex[currentFace] = int.Parse(faceParts[0]) - 1;
+                        uvsIndex[currentFace] = int.Parse(faceParts[1]) - 1;
+                        normalsIndex[currentFace] = int.Parse(faceParts[2]) - 1;
 
-                        vertices[currentFace] = verticesByIndex[int.Parse(faceParts[0])];
-                        uvs[currentFace] = uvsByIndex[int.Parse(faceParts[1])];
-                        normals[currentFace] = normalsByIndex[int.Parse(faceParts[2])];
+                        vertices[currentFace] = verticesByIndex[verticesIndex[currentFace]];
+                        uvs[currentFace] = uvsByIndex[uvsIndex[currentFace]];
+                        normals[currentFace] = normalsByIndex[normalsIndex[currentFace]];
 
                         currentFace++;
 
                         faceParts = parts[2].Split('/');
 
-                        verticesIndex[currentFace] = int.Parse(faceParts[0]);
-                        uvsIndex[currentFace] = int.Parse(faceParts[1]);
-                        normalsIndex[currentFace] = int.Parse(faceParts[2]);
+                        verticesIndex[currentFace] = int.Parse(faceParts[0]) - 1;
+                        uvsIndex[currentFace] = int.Parse(faceParts[1]) - 1;
+                        normalsIndex[currentFace] = int.Parse(faceParts[2]) - 1;
 
-                        vertices[currentFace] = verticesByIndex[int.Parse(faceParts[0])];
-                        uvs[currentFace] = uvsByIndex[int.Parse(faceParts[1])];
-                        normals[currentFace] = normalsByIndex[int.Parse(faceParts[2])];
+                        vertices[currentFace] = verticesByIndex[verticesIndex[currentFace]];
+                        uvs[currentFace] = uvsByIndex[uvsIndex[currentFace]];
+                        normals[currentFace] = normalsByIndex[normalsIndex[currentFace]];
 
                         currentFace++;
 
                         faceParts = parts[3].Split('/');
 
-                        verticesIndex[currentFace] = int.Parse(faceParts[0]);
-                        uvsIndex[currentFace] = int.Parse(faceParts[1]);
-                        normalsIndex[currentFace] = int.Parse(faceParts[2]);
+                        verticesIndex[currentFace] = int.Parse(faceParts[0]) - 1;
+                        uvsIndex[currentFace] = int.Parse(faceParts[1]) - 1;
+                        normalsIndex[currentFace] = int.Parse(faceParts[2]) - 1;
 
-                        vertices[currentFace] = verticesByIndex[int.Parse(faceParts[0])];
-                        uvs[currentFace] = uvsByIndex[int.Parse(faceParts[1])];
-                        normals[currentFace] = normalsByIndex[int.Parse(faceParts[2])];
+                        vertices[currentFace] = verticesByIndex[verticesIndex[currentFace]];
+                        uvs[currentFace] = uvsByIndex[uvsIndex[currentFace]];
+                        normals[currentFace] = normalsByIndex[normalsIndex[currentFace]];
 
                         currentFace++;
                         break;

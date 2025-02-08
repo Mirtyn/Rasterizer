@@ -1,4 +1,5 @@
-﻿using Rasterizer.Library;
+﻿using OpenTK.Graphics.ES11;
+using Rasterizer.Library;
 using Rasterizer.Library.Mathmatics;
 
 namespace Rasterizer.Console.Rasterizers
@@ -37,7 +38,7 @@ namespace Rasterizer.Console.Rasterizers
         Mesh mesh = new Mesh();
 
         // note: Only works on Mirtyn's laptop
-        string meshPath = "D:\\Mirtyn\\VS\\Learn\\OpenTK\\Rasterizer\\Rasterizer.Console\\Media\\cube.obj";
+        string meshPath = "Media//monkey.obj";
 
         public float CubeWidth
         {
@@ -123,20 +124,27 @@ namespace Rasterizer.Console.Rasterizers
 
             var translation = Matrix4x4.CreateTranslation(_position);
 
-            var rotationZ = Matrix4x4.CreateRotationZ(_rotation.Z);
+            var rotationZ = Matrix4x4.CreateRotationZ(MathF.PI);
 
             var rotationY = Matrix4x4.CreateRotationY(_rotation.Y);
 
             var rotationX = Matrix4x4.CreateRotationX(_rotation.X);
+
+            //var perspectiveTranform = Matrix4x4.PerspectiveMatrix(fov, aspect, near, far);
 
             var transformed = new Vector3[mesh.Vertices.Length];
 
             for(var i = 0; i < mesh.Vertices.Length; i++)
             {
                 transformed[i] = Matrix4x4.RotateVector(mesh.Vertices[i], rotationY);
-                transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
+                //transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
-                transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
+                //transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
+
+
+                // perspective transform !!!
+                //transformed[i] = Matrix4x4.TransformVector(transformed[i], perspectiveTranform);
+
 
                 transformed[i].X += 1.0f;
                 transformed[i].Y += 1.0f;
