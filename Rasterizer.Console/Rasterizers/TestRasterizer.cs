@@ -16,7 +16,7 @@ namespace Rasterizer.Console.Rasterizers
 
         Mesh cube = new Mesh();
         private Matrix4x4 projectionMatrix = new Matrix4x4();
-        private Matrix4x4 RotationZMatrix = new Matrix4x4();
+        private Matrix4x4 RotationZMatrix = Matrix4x4.Identity;
         private Matrix4x4 RotationXMatrix = Matrix4x4.Identity;
 
         float fTheta;

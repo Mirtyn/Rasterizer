@@ -2,6 +2,7 @@
 using OpenTK.Mathematics;
 using System.Collections;
 using System.Diagnostics.Contracts;
+using System.Numerics;
 
 namespace Rasterizer.Library.Mathmatics
 {
@@ -324,13 +325,20 @@ namespace Rasterizer.Library.Mathmatics
                 { 0f, 1f, 0f, 0f },
                 { 0f, 0f, 1f, 0f },
                 { 0f, 0f, 0f, 1f }
-            } };
+            } 
+        };
+
+        public static Vector3 MultiplyMatrixVector(Vector3 i, Matrix4x4 m)
+        {
+            MultiplyMatrixVector(i, out Vector3 result, m);
+            return result;
+        }
 
         public static void MultiplyMatrixVector(Vector3 i, out Vector3 o, Matrix4x4 m)
         {
-            o.X = i.X * m.Matrix[0,0] + i.Y * m.Matrix[1,0] + i.Z * m.Matrix[2,0] + m.Matrix[3,0];
-            o.Y = i.X * m.Matrix[0,1] + i.Y * m.Matrix[1,1] + i.Z * m.Matrix[2,1] + m.Matrix[3,1];
-            o.Z = i.X * m.Matrix[0,2] + i.Y * m.Matrix[1,2] + i.Z * m.Matrix[2,2] + m.Matrix[3,2];
+            o.X = i.X * m.Matrix[0, 0] + i.Y * m.Matrix[1, 0] + i.Z * m.Matrix[2, 0] + m.Matrix[3, 0];
+            o.Y = i.X * m.Matrix[0, 1] + i.Y * m.Matrix[1, 1] + i.Z * m.Matrix[2, 1] + m.Matrix[3, 1];
+            o.Z = i.X * m.Matrix[0, 2] + i.Y * m.Matrix[1, 2] + i.Z * m.Matrix[2, 2] + m.Matrix[3, 2];
             float w = i.X * m.Matrix[0, 3] + i.Y * m.Matrix[1, 3] + i.Z * m.Matrix[2, 3] + m.Matrix[3, 3];
 
             if (w != 0)
@@ -339,6 +347,34 @@ namespace Rasterizer.Library.Mathmatics
                 o.Y /= w;
                 o.Z /= w;
             }
+        }
+
+        public static void CreateTranslation(float x, float y, float z, out Matrix4x4 result)
+        {
+            result = Identity;
+            result.Matrix[3, 0] = x;
+            result.Matrix[3, 1] = y;
+            result.Matrix[3, 2] = z;
+        }
+
+        public static void CreateTranslation(in Vector3 vector, out Matrix4x4 result)
+        {
+            result = Identity;
+            result.Matrix[3, 0] = vector.X;
+            result.Matrix[3, 1] = vector.Y;
+            result.Matrix[3, 2] = vector.Z;
+        }
+
+        public static Matrix4x4 CreateTranslation(float x, float y, float z)
+        {
+            CreateTranslation(x, y, z, out Matrix4x4 result);
+            return result;
+        }
+
+        public static Matrix4x4 CreateTranslation(Vector3 vector)
+        {
+            CreateTranslation(vector.X, vector.Y, vector.Z, out Matrix4x4 result);
+            return result;
         }
 
         public static void CreateRotationX(float radians, out Matrix4x4 result)
@@ -352,7 +388,6 @@ namespace Rasterizer.Library.Mathmatics
 
         }
 
-        [Pure]
         public static Matrix4x4 CreateRotationX(float radians)
         {
             CreateRotationX(radians, out Matrix4x4 result);
@@ -368,7 +403,6 @@ namespace Rasterizer.Library.Mathmatics
             result.Matrix[1, 1] = MathF.Cos(radians);
         }
 
-        [Pure]
         public static Matrix4x4 CreateRotationY(float angle)
         {
             CreateRotationY(angle, out Matrix4x4 result);
