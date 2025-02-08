@@ -23,25 +23,24 @@ namespace Rasterizer.Console.Rasterizers
 
         public override void Load()
         {
-            //OpenTK.Mathematics.Matrix4
-            cube.triangles = new Triangle[12];
-            cube.triangles[0].Points = [new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)];
-            cube.triangles[1].Points = [new Vector3(0, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0)];
+            //cube.triangles = new Triangle[12];
+            //cube.triangles[0].Points = [new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)];
+            //cube.triangles[1].Points = [new Vector3(0, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 0, 0)];
 
-            cube.triangles[2].Points = [new Vector3(1, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 1, 1)];
-            cube.triangles[3].Points = [new Vector3(1, 0, 0), new Vector3(1, 1, 1), new Vector3(1, 0, 1)];
+            //cube.triangles[2].Points = [new Vector3(1, 0, 0), new Vector3(1, 1, 0), new Vector3(1, 1, 1)];
+            //cube.triangles[3].Points = [new Vector3(1, 0, 0), new Vector3(1, 1, 1), new Vector3(1, 0, 1)];
 
-            cube.triangles[4].Points = [new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(0, 1, 1)];
-            cube.triangles[5].Points = [new Vector3(1, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 0, 1)];
+            //cube.triangles[4].Points = [new Vector3(1, 0, 1), new Vector3(1, 1, 1), new Vector3(0, 1, 1)];
+            //cube.triangles[5].Points = [new Vector3(1, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 0, 1)];
 
-            cube.triangles[6].Points = [new Vector3(0, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 1, 0)];
-            cube.triangles[7].Points = [new Vector3(0, 0, 1), new Vector3(0, 1, 0), new Vector3(0, 0, 0)];
+            //cube.triangles[6].Points = [new Vector3(0, 0, 1), new Vector3(0, 1, 1), new Vector3(0, 1, 0)];
+            //cube.triangles[7].Points = [new Vector3(0, 0, 1), new Vector3(0, 1, 0), new Vector3(0, 0, 0)];
 
-            cube.triangles[8].Points = [new Vector3(0, 1, 0), new Vector3(0, 1, 1), new Vector3(1, 1, 1)];
-            cube.triangles[9].Points = [new Vector3(0, 1, 0), new Vector3(1, 1, 1), new Vector3(1, 1, 0)];
+            //cube.triangles[8].Points = [new Vector3(0, 1, 0), new Vector3(0, 1, 1), new Vector3(1, 1, 1)];
+            //cube.triangles[9].Points = [new Vector3(0, 1, 0), new Vector3(1, 1, 1), new Vector3(1, 1, 0)];
 
-            cube.triangles[10].Points = [new Vector3(1, 0, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 0)];
-            cube.triangles[11].Points = [new Vector3(1, 0, 1), new Vector3(0, 0, 0), new Vector3(1, 0, 0)];
+            //cube.triangles[10].Points = [new Vector3(1, 0, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 0)];
+            //cube.triangles[11].Points = [new Vector3(1, 0, 1), new Vector3(0, 0, 0), new Vector3(1, 0, 0)];
 
             float near = 0.1f;
             float far = 1000f;
@@ -105,52 +104,52 @@ namespace Rasterizer.Console.Rasterizers
             //RotationXMatrix.Matrix[2, 2] = -MathF.Cos(0.5f * fTheta);
             //RotationXMatrix.Matrix[3, 3] = 1;
 
-            foreach (var tri in cube.triangles)
-            {
-                Triangle triProjected = new Triangle();
-                Triangle triTranslated = new Triangle();
-                Triangle triRotatedZX = new Triangle();
-                Triangle triRotatedZ = new Triangle();
+            //foreach (var tri in cube.triangles)
+            //{
+            //    Triangle triProjected = new Triangle();
+            //    Triangle triTranslated = new Triangle();
+            //    Triangle triRotatedZX = new Triangle();
+            //    Triangle triRotatedZ = new Triangle();
 
-                // 
-                Matrix4x4.RotateVector(tri.Points[0], out triRotatedZ.Points[0], RotationZMatrix);
-                Matrix4x4.RotateVector(tri.Points[1], out triRotatedZ.Points[1], RotationZMatrix);
-                Matrix4x4.RotateVector(tri.Points[2], out triRotatedZ.Points[2], RotationZMatrix);
+            //    // 
+            //    Matrix4x4.RotateVector(tri.Points[0], out triRotatedZ.Points[0], RotationZMatrix);
+            //    Matrix4x4.RotateVector(tri.Points[1], out triRotatedZ.Points[1], RotationZMatrix);
+            //    Matrix4x4.RotateVector(tri.Points[2], out triRotatedZ.Points[2], RotationZMatrix);
 
-                // 
-                Matrix4x4.RotateVector(triRotatedZ.Points[0], out triRotatedZX.Points[0], RotationXMatrix);
-                Matrix4x4.RotateVector(triRotatedZ.Points[1], out triRotatedZX.Points[1], RotationXMatrix);
-                Matrix4x4.RotateVector(triRotatedZ.Points[2], out triRotatedZX.Points[2], RotationXMatrix);
+            //    // 
+            //    Matrix4x4.RotateVector(triRotatedZ.Points[0], out triRotatedZX.Points[0], RotationXMatrix);
+            //    Matrix4x4.RotateVector(triRotatedZ.Points[1], out triRotatedZX.Points[1], RotationXMatrix);
+            //    Matrix4x4.RotateVector(triRotatedZ.Points[2], out triRotatedZX.Points[2], RotationXMatrix);
 
-                triTranslated = triRotatedZX;
-                triTranslated.Points[0].Z = triRotatedZX.Points[0].Z + 3f;
-                triTranslated.Points[1].Z = triRotatedZX.Points[1].Z + 3f;
-                triTranslated.Points[2].Z = triRotatedZX.Points[2].Z + 3f;
+            //    triTranslated = triRotatedZX;
+            //    triTranslated.Points[0].Z = triRotatedZX.Points[0].Z + 3f;
+            //    triTranslated.Points[1].Z = triRotatedZX.Points[1].Z + 3f;
+            //    triTranslated.Points[2].Z = triRotatedZX.Points[2].Z + 3f;
 
-                Matrix4x4.RotateVector(triTranslated.Points[0], out triProjected.Points[0], projectionMatrix);
-                Matrix4x4.RotateVector(triTranslated.Points[1], out triProjected.Points[1], projectionMatrix);
-                Matrix4x4.RotateVector(triTranslated.Points[2], out triProjected.Points[2], projectionMatrix);
+            //    Matrix4x4.RotateVector(triTranslated.Points[0], out triProjected.Points[0], projectionMatrix);
+            //    Matrix4x4.RotateVector(triTranslated.Points[1], out triProjected.Points[1], projectionMatrix);
+            //    Matrix4x4.RotateVector(triTranslated.Points[2], out triProjected.Points[2], projectionMatrix);
 
-                triProjected.Points[0].X += 1f;
-                triProjected.Points[0].Y += 1f;
+            //    triProjected.Points[0].X += 1f;
+            //    triProjected.Points[0].Y += 1f;
 
-                triProjected.Points[1].X += 1f;
-                triProjected.Points[1].Y += 1f;
+            //    triProjected.Points[1].X += 1f;
+            //    triProjected.Points[1].Y += 1f;
 
-                triProjected.Points[2].X += 1f;
-                triProjected.Points[2].Y += 1f;
+            //    triProjected.Points[2].X += 1f;
+            //    triProjected.Points[2].Y += 1f;
 
-                triProjected.Points[0].X *= 0.5f * Width;
-                triProjected.Points[0].Y *= 0.5f * Height;
+            //    triProjected.Points[0].X *= 0.5f * Width;
+            //    triProjected.Points[0].Y *= 0.5f * Height;
 
-                triProjected.Points[1].X *= 0.5f * Width;
-                triProjected.Points[1].Y *= 0.5f * Height;
+            //    triProjected.Points[1].X *= 0.5f * Width;
+            //    triProjected.Points[1].Y *= 0.5f * Height;
 
-                triProjected.Points[2].X *= 0.5f * Width;
-                triProjected.Points[2].Y *= 0.5f * Height;
+            //    triProjected.Points[2].X *= 0.5f * Width;
+            //    triProjected.Points[2].Y *= 0.5f * Height;
 
-                DrawTriangle(triProjected.Points[0], triProjected.Points[1], triProjected.Points[2], fgColor.R, fgColor.G, fgColor.B);
-            }
+            //    DrawTriangle(triProjected.Points[0], triProjected.Points[1], triProjected.Points[2], fgColor.R, fgColor.G, fgColor.B);
+            //}
         }
     }
 }
