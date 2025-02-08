@@ -8,8 +8,10 @@ namespace Rasterizer.Core
         protected string WindowName { get; set; }
         protected int InitialWindowHeight { get; set; }
         protected int InitialWindowWidth { get; set; }
-        private GameWindowSettings gameWindowSettings = new GameWindowSettings();
-        private NativeWindowSettings nativeWindowSettings = new NativeWindowSettings();
+        private GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
+        private NativeWindowSettings nativeWindowSettings = NativeWindowSettings.Default;
+
+        protected GameWindow Window;
 
         public Game(string windowName, int initialWindowHeight, int initialWindowWidth)
         {
@@ -21,10 +23,10 @@ namespace Rasterizer.Core
         public void Run()
         {
             Initialize();
-            using GameWindow gameWindow = new GameWindow(gameWindowSettings, nativeWindowSettings);
+            Window = new GameWindow(gameWindowSettings, nativeWindowSettings);
             GameTime gameTime = new GameTime();
-            gameWindow.Load += LoadContent;
-            gameWindow.UpdateFrame += (FrameEventArgs frameEventArgs) =>
+            Window.Load += LoadContent;
+            Window.UpdateFrame += (FrameEventArgs frameEventArgs) =>
             {
                 var time = frameEventArgs.Time;
                 gameTime.TotalGameTime += TimeSpan.FromMilliseconds(time);
@@ -32,12 +34,12 @@ namespace Rasterizer.Core
                 Update(gameTime);
             };
 
-            gameWindow.RenderFrame += (FrameEventArgs frameEventArgs) =>
+            Window.RenderFrame += (FrameEventArgs frameEventArgs) =>
             {
                 Render(gameTime);
-                gameWindow.SwapBuffers();
+                Window.SwapBuffers();
             };
-            gameWindow.Run();
+            Window.Run();
         }
 
         protected abstract void Initialize();

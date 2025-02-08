@@ -32,7 +32,7 @@ namespace Rasterizer.Console
                 Title = "Rasterizer - Console Window",
                 Profile = ContextProfile.Compatability, // needed for OpenGL Immediate Mode
                 WindowBorder = WindowBorder.Hidden,
-                APIVersion = new System.Version(3, 2),
+                //APIVersion = new System.Version(3, 2),
             };
 
             using (window = new Window(GameWindowSettings.Default, nativeWindowSettings))
