@@ -31,7 +31,7 @@ namespace Rasterizer.Console.Rasterizers
         Vector3 RotateSpeed = new Vector3(MathF.PI * 0.10f, MathF.PI * 0.10f, MathF.PI * 0.10f);
         Vector3 ScaleSpeed = new Vector3(25, 25, 25);
 
-        Vector3 MoveDirection = new Vector3(1, 1, 1);
+        Vector3 MoveDirection = new Vector3(0, 0, 0);
         Vector3 RotateDirection = new Vector3(1, 1, 1);
         Vector3 ScaleDirection = new Vector3(1, 1, 1);
 
@@ -124,6 +124,14 @@ namespace Rasterizer.Console.Rasterizers
 
             var rotationX = Matrix4x4.CreateRotationX(_rotation.X);
 
+            float near = 0.1f;
+            float far = 1000f;
+            float fov = 90f;
+            float aspectRatio = Height / Width;
+            float fovRad = 1f / MathF.Tan(fov * 0.5f / 180 * MathF.PI);
+
+            var perspective = Matrix4x4.CreateProjectionMatrix(fov, aspectRatio, near, far);
+
             var transformed = new Vector3[8];
 
             for (var i = 0; i < Points.Length; i++)
@@ -132,6 +140,7 @@ namespace Rasterizer.Console.Rasterizers
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
                 transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
+                transformed[i] = Matrix4x4.MultiplyPerspectiveMatrixVector(transformed[i], perspective);
 
                 transformed[i].X += 1.0f;
                 transformed[i].Y += 1.0f;

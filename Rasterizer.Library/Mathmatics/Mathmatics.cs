@@ -401,6 +401,28 @@ namespace Rasterizer.Library.Mathmatics
             o.Z = i.Z + m[3, 2];
         }
 
+        public static Vector3 MultiplyPerspectiveMatrixVector(Vector3 i, Matrix4x4 m)
+        {
+            MultiplyPerspectiveMatrixVector(i, out Vector3 result, m);
+            return result;
+        }
+
+        public static void MultiplyPerspectiveMatrixVector(Vector3 i, out Vector3 o, Matrix4x4 m)
+        {
+            o.X = (i.X * m.Matrix[0, 0]) + (i.Y * m.Matrix[1, 0]) + (i.Z * m.Matrix[2, 0]) + m.Matrix[3, 0];
+            o.Y = (i.X * m.Matrix[0, 1]) + (i.Y * m.Matrix[1, 1]) + (i.Z * m.Matrix[2, 1]) + m.Matrix[3, 1];
+            o.Z = (i.X * m.Matrix[0, 2]) + (i.Y * m.Matrix[1, 2]) + (i.Z * m.Matrix[2, 2]) + m.Matrix[3, 2];
+
+            float w = (i.X * m.Matrix[0, 3]) + (i.Y * m.Matrix[1, 3]) + (i.Z * m.Matrix[2, 3]) + m.Matrix[3, 3];
+
+            if (w != 0)
+            {
+                o.X /= w;
+                o.Y /= w;
+                o.Z /= w;
+            }
+        }
+
         public static Vector3 ScaleVector(Vector3 i, Matrix4x4 m)
         {
             ScaleVector(i, out Vector3 result, m);
@@ -422,12 +444,18 @@ namespace Rasterizer.Library.Mathmatics
             result[3, 2] = z;
         }
 
-        public static void CreateTranslation(in Vector3 vector, out Matrix4x4 result)
+        public static Matrix4x4 CreateProjectionMatrix(float fov, float aspect, float near, float far)
         {
-            result = new Matrix4x4();
-            result.Matrix[3, 0] = vector.X;
-            result.Matrix[3, 1] = vector.Y;
-            result.Matrix[3, 2] = vector.Z;
+            float fovRad = MathF.Tan(fov * 0.5f);
+            Matrix4x4 m = new Matrix4x4(Matrix4x4.Identity);
+
+            m[0, 0] = 1f / (fovRad * aspect);
+            m[1, 1] = 1f / fovRad;
+            m[2, 2] = (far + near) / (near - far);
+            m[2, 3] = (far + far) * near / (near - far);
+            m[3, 2] = -1;
+
+            return m;
         }
 
         public static Matrix4x4 CreateTranslation(float x, float y, float z)
