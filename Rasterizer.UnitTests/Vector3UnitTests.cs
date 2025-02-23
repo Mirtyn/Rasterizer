@@ -2,7 +2,7 @@ using Rasterizer.Library.Mathmatics;
 
 namespace Rasterizer.UnitTests
 {
-    public class Vector3UnitTest
+    public class Vector3UnitTest : AbstractUnitTests
     {
         [SetUp]
         public void Setup()

@@ -356,6 +356,8 @@ namespace Rasterizer.Library.Mathmatics
             }
         };
 
+
+
         public float this[int rowIndex, int columnIndex]
         {
             readonly get { return Matrix[rowIndex, columnIndex]; }
@@ -444,16 +446,37 @@ namespace Rasterizer.Library.Mathmatics
             result[3, 2] = z;
         }
 
-        public static Matrix4x4 CreateProjectionMatrix(float fov, float aspect, float near, float far)
+        public static Matrix4x4 CreateProjectionMatrix(float fovRad, float aspect, float near, float far)
         {
-            float fovRad = MathF.Tan(fov * 0.5f);
             Matrix4x4 m = new Matrix4x4(Matrix4x4.Identity);
 
-            m[0, 0] = 1f / (fovRad * aspect);
-            m[1, 1] = 1f / fovRad;
-            m[2, 2] = (far + near) / (near - far);
-            m[2, 3] = (far + far) * near / (near - far);
-            m[3, 2] = -1;
+            float top = near * MathF.Tan(fovRad * 0.5f);
+            float bottom = -top;
+            float left = bottom * aspect;
+            float right = top * aspect;
+
+            var x = 2.0f * near / (right - left);
+            var y = 2.0f * near / (top - bottom);
+            var a = (right + left) / (right - left);
+            var b = (top + bottom) / (top - bottom);
+            var c = -(far + near) / (far - near);
+            var d = -(2.0f * far * near) / (far - near);
+
+            m[0, 0] = x;
+            m[1, 1] = y;
+            m[2, 0] = a;
+            m[2, 1] = b;
+            m[2, 2] = c;
+            m[2, 3] = -1;
+            m[3, 2] = d;
+            m[3, 3] = 0;
+
+            //m[0, 0] = 1f / (fovRad * aspect);
+            //m[1, 1] = 1f / fovRad;
+            //m[2, 2] = (far + near) / (near - far);
+            //m[2, 3] = (far + far) * near / (near - far);
+            //m[3, 2] = -1;
+            //m[3, 3] = 0;
 
             return m;
         }
@@ -591,6 +614,15 @@ namespace Rasterizer.Library.Mathmatics
         public static Matrix4x4 operator *(Matrix4x4 lhs, Matrix4x4 rhs)
         {
             return Matrix4x4.MultiplyMatrix(lhs, rhs);
+        }
+    }
+
+    public class MyMath
+    {
+        public static float DegreesToRadians(float degrees)
+        {
+            float radians = (MathF.PI / 180f) * degrees;
+            return (radians);
         }
     }
 }

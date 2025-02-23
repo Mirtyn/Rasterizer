@@ -6,7 +6,7 @@ using System;
 
 namespace Rasterizer.Console.Rasterizers
 {
-    internal class ObjRasterizer : AbstractRasterizer
+    internal class ObjPerspectiveRasterizer : AbstractRasterizer
     {
         Random random = new Random();
 
@@ -30,7 +30,7 @@ namespace Rasterizer.Console.Rasterizers
 
         string meshPath = "Media//monkey.obj";
 
-        public ObjRasterizer()
+        public ObjPerspectiveRasterizer()
         {
             MoveSpeed = new Vector3(random.NextSingle(0.005f, 0.075f), random.NextSingle(0.005f, 0.075f), random.NextSingle(0.005f, 0.075f));
             RotateSpeed = new Vector3(MathF.PI * random.NextSingle(0.005f, 0.025f), MathF.PI * random.NextSingle(0.005f, 0.025f), MathF.PI * random.NextSingle(0.005f, 0.025f));
@@ -70,6 +70,14 @@ namespace Rasterizer.Console.Rasterizers
 
             //var perspectiveTranform = Matrix4x4.PerspectiveMatrix(fov, aspect, near, far);
 
+            float near = 0.1f;
+            float far = 1000f;
+            float fov = 90f;
+            float aspectRatio = Height / Width;
+            float fovRad = MyMath.DegreesToRadians(fov);
+
+            var perspective = Matrix4x4.CreateProjectionMatrix(fovRad, aspectRatio, near, far);
+
             var transformed = new Vector3[mesh.Vertices.Length];
 
             for (var i = 0; i < mesh.Vertices.Length; i++)
@@ -79,6 +87,7 @@ namespace Rasterizer.Console.Rasterizers
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
                 transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
                 transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
+                transformed[i] = Matrix4x4.MultiplyPerspectiveMatrixVector(transformed[i], perspective);
 
                 transformed[i].X += 1.0f;
                 transformed[i].Y += 1.0f;

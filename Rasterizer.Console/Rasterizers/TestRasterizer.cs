@@ -46,7 +46,7 @@ namespace Rasterizer.Console.Rasterizers
             float far = 1000f;
             float fov = 90f;
             float aspectRatio = Height / Width;
-            float fovRad = 1f / MathF.Tan(fov * 0.5f / 180 * MathF.PI);
+            float fovRad = MyMath.DegreesToRadians(fov);
 
             projectionMatrix.Matrix[0, 0] = aspectRatio * fovRad;
             projectionMatrix.Matrix[1, 1] = fovRad;
