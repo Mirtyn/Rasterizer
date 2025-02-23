@@ -570,7 +570,7 @@ namespace Rasterizer.Library.Mathmatics
 
             float temp = 0;
 
-            Matrix4x4 result = new Matrix4x4(Matrix4x4.Zero);
+            Matrix4x4 result = new Matrix4x4(Matrix4x4.Identity);
 
             for (int i = 0; i < length; i++)
             {
