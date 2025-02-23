@@ -563,5 +563,34 @@ namespace Rasterizer.Library.Mathmatics
             CreateRotationZ(angle, out Matrix4x4 result);
             return result;
         }
+
+        public static Matrix4x4 MultiplyMatrix(Matrix4x4 lhs, Matrix4x4 rhs)
+        {
+            int length = 4;
+
+            float temp = 0;
+
+            Matrix4x4 result = new Matrix4x4(Matrix4x4.Zero);
+
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 0; j < length; j++)
+                {
+                    temp = 0;
+                    for (int k = 0; k < length; k++)
+                    {
+                        temp += lhs[i, k] * rhs[k, j];
+                    }
+                    result[i, j] = temp;
+                }
+            }
+
+            return result;
+        }
+
+        public static Matrix4x4 operator *(Matrix4x4 lhs, Matrix4x4 rhs)
+        {
+            return Matrix4x4.MultiplyMatrix(lhs, rhs);
+        }
     }
 }

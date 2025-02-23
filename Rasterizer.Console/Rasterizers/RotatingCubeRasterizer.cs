@@ -124,6 +124,7 @@ namespace Rasterizer.Console.Rasterizers
 
             var rotationX = Matrix4x4.CreateRotationX(_rotation.X);
 
+            // creating the far, near, fov, ratio for the perspective matrix
             float near = 0.1f;
             float far = 1000f;
             float fov = 90f;
@@ -134,13 +135,20 @@ namespace Rasterizer.Console.Rasterizers
 
             var transformed = new Vector3[8];
 
+            // multiplying the matrixes together into one matrix
+            var transformationMatrix = rotationY * rotationX * rotationZ * translation * perspective;
+
             for (var i = 0; i < Points.Length; i++)
             {
-                transformed[i] = Matrix4x4.RotateVector(Points[i], rotationY);
-                transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
-                transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
-                transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
-                transformed[i] = Matrix4x4.MultiplyPerspectiveMatrixVector(transformed[i], perspective);
+                //transformed[i] = Matrix4x4.RotateVector(Points[i], rotationY);
+                //transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationX);
+                //transformed[i] = Matrix4x4.RotateVector(transformed[i], rotationZ);
+                //transformed[i] = Matrix4x4.TranslateVector(transformed[i], translation);
+                //transformed[i] = Matrix4x4.MultiplyPerspectiveMatrixVector(transformed[i], perspective);
+                
+
+                // transforming the points with the matrix
+                transformed[i] = Matrix4x4.MultiplyPerspectiveMatrixVector(Points[i], transformationMatrix);
 
                 transformed[i].X += 1.0f;
                 transformed[i].Y += 1.0f;
